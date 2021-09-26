@@ -1,7 +1,9 @@
 package apiserver
 
 import (
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/Cyberzhaba/go-back-im-scared/internal/app/store"
 	nft "github.com/Cyberzhaba/go-back-im-scared/nft"
@@ -54,7 +56,7 @@ func (s *APIserver) CreateUser() gin.HandlerFunc {
 			return
 		}
 		// Generate "new" account
-		account, _ := nft.GenerateWallet()
+		account, wallet := nft.GenerateWallet()
 		// Create new user
 		newUser := store.User{
 			TelegramID: tgid,
@@ -73,12 +75,37 @@ func (s *APIserver) CreateUser() gin.HandlerFunc {
 			return
 		}
 		// DEV TEST
-		// data, err := os.ReadFile("testdata.txt")
-		// if err != nil {
-		// 	log.Printf("%v", err)
-		// }
-		// nft.SignTransaction(*wallet, account, data)
+		data, err := os.ReadFile("testdata.txt")
+		if err != nil {
+			log.Printf("%v", err)
+		}
+		nft.SignTransaction(*wallet, account, data)
 
 		c.JSON(http.StatusCreated, newUser)
+	}
+}
+
+//
+// func (s *APIserver) GetUserBids() gin.HandlerFunc {
+// 	return func(c *gin.Context) {
+// 		var bids []store.UserBid
+// 		// var user store.User
+// 		s.store.Database.Model(bids)
+// 		c.JSON(http.StatusOK, bids)
+// 	}
+// }
+
+// Create bid
+func (s *APIserver) CreateBid() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var checkBid store.CheckUserBid
+		var bid store.UserBid
+		if err := c.BindJSON(&checkBid); err != nil {
+			s.logger.Error(err)
+			c.JSON(http.StatusConflict, store.UserBid{})
+			return
+		}
+
+		c.JSON(http.StatusOK, bid)
 	}
 }

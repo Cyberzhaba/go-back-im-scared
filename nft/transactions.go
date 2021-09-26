@@ -10,6 +10,7 @@ import (
 	hdwallet "github.com/miguelmota/go-ethereum-hdwallet"
 )
 
+// https://ethereum.stackexchange.com/questions/16472/signing-a-raw-transaction-in-go
 func SignTransaction(wallet hdwallet.Wallet, account accounts.Account, data []byte) {
 	nonce := uint64(0)
 	value := big.NewInt(3)

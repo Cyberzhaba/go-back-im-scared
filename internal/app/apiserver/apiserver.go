@@ -56,9 +56,22 @@ func (s *APIserver) configureLogger() error {
 
 // Add routes
 func (s *APIserver) configureRouter() {
+	// Test func 200 {"message" : "pong"}
 	s.router.GET("/ping", s.Ping())
-	s.router.GET("/user", s.GetUserByID())
-	s.router.POST("/user/create", s.CreateUser())
+
+	// Get user info
+	// {"telegram_id" : string}
+	s.router.GET("/get/user", s.GetUserByID())
+
+	// Get all user's bids
+	// {"telegram_id" : string}
+	// s.router.GET("/get/bids", s.GetBids())
+
+	// Create and return new user (wallet)
+	s.router.POST("/create/user", s.CreateUser())
+
+	// Create new and bid
+	s.router.POST("/create/bid", s.CreateBid())
 }
 
 // Configure db, from config file

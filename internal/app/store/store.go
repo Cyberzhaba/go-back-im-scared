@@ -27,7 +27,7 @@ func (s *Store) Open() error {
 	db.AutoMigrate(
 		User{},
 		UserHistory{},
-		UserBids{},
+		UserBid{},
 	)
 	// if err != nil {
 	// 	return err

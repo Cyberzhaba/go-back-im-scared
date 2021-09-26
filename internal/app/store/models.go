@@ -4,9 +4,19 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserBids struct {
+type UserBid struct {
 	gorm.Model
-	Timestamp string
+	MaxValue  int    `json:"maxvaule"`
+	Timestamp string `json:"timestamp"`
+	TokenID   string `json:"token_id"`
+	Contract  string `json:"contract"`
+}
+
+type CheckUserBid struct {
+	MaxValue  int    `json:"maxvaule"`
+	Timestamp string `json:"timestamp"`
+	TokenID   string `json:"token_id"`
+	Contract  string `json:"contract"`
 }
 
 type UserHistory struct {
@@ -19,7 +29,7 @@ type User struct {
 	TelegramID  string        `json:"telegram_id" gorm:"unique"`
 	SeedPhrase  string        `json:"seed_phrase"`
 	AddrWallet  string        `json:"addr_wallet"`
-	UserBids    []UserBids    `json:"user_bids" gorm:"foreignKey:id"`
+	UserBids    []UserBid     `json:"user_bids" gorm:"foreignKey:id"`
 	UserHistory []UserHistory `json:"user_history" gorm:"foreignKey:id"`
 }
 
