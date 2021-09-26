@@ -57,8 +57,8 @@ func (s *APIserver) configureLogger() error {
 // Add routes
 func (s *APIserver) configureRouter() {
 	s.router.GET("/ping", s.Ping())
-	s.router.GET("/getuser/:telegram_id", s.GetUserByID())
-	s.router.POST("/createuser", s.CreateUser())
+	s.router.GET("/user", s.GetUserByID())
+	s.router.POST("/user/create", s.CreateUser())
 }
 
 // Configure db, from config file

@@ -16,7 +16,7 @@ type UserHistory struct {
 
 type User struct {
 	gorm.Model
-	TelegramID  int           `json:"telegram_id" gorm:"unique"`
+	TelegramID  string        `json:"telegram_id" gorm:"unique"`
 	SeedPhrase  string        `json:"seed_phrase"`
 	AddrWallet  string        `json:"addr_wallet"`
 	UserBids    []UserBids    `json:"user_bids" gorm:"foreignKey:id"`

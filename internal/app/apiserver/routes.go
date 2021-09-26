@@ -23,7 +23,8 @@ func (s *APIserver) Ping() gin.HandlerFunc {
 // Get user by unique telegram-id from bot
 func (s *APIserver) GetUserByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		tgid := c.Param("telegram_id")
+		tgid := c.Query("telegram_id")
+		s.logger.Debug(tgid)
 		var user store.User
 		s.store.Database.First(&user, "telegram_id = ?", tgid)
 		c.JSON(http.StatusOK, user)
@@ -33,19 +34,30 @@ func (s *APIserver) GetUserByID() gin.HandlerFunc {
 // Create new user if not exists with new wallet
 func (s *APIserver) CreateUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		// VALIDATE ON FRONTEND
+
 		type checkUser struct {
-			TelegramID int `json:"telegram_id"`
+			TelegramID string `json:"telegram_id"`
 		}
 
 		var u checkUser
 		if err := c.BindJSON(&u); err != nil {
 			s.logger.Error(err)
+			c.JSON(http.StatusConflict, store.User{})
+			return
+		}
+
+		tgid := u.TelegramID
+		if tgid == "" {
+			s.logger.Error("telegram-id is empty")
+			c.JSON(http.StatusConflict, store.User{})
+			return
 		}
 		// Generate "new" account
 		account, _ := nft.GenerateWallet()
 		// Create new user
 		newUser := store.User{
-			TelegramID: u.TelegramID,
+			TelegramID: tgid,
 			// TODO REPLACE TO AUTOGENERATION
 			SeedPhrase: "tag volcano eight thank tide danger coast health above argue embrace heavy",
 			AddrWallet: account.Address.Hex(),
