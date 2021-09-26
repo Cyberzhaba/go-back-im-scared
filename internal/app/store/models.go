@@ -8,6 +8,7 @@ type UserBid struct {
 	gorm.Model
 	TelegramID string `json:"telegram_id"`
 	MaxValue   int    `json:"maxvalue"`
+	Step       int    `json:"step"`
 	Timestamp  string `json:"timestamp"`
 	TokenID    string `json:"token_id"`
 	Contract   string `json:"contract"`

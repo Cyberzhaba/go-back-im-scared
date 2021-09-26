@@ -28,6 +28,12 @@ type Bids struct {
 	Sellers       int
 }
 
+type InternalError struct {
+	Status  int
+	Code    string
+	Message string
+}
+
 // Return Order
 func GetSellOrdersByItem(contract, tokenID string) Order {
 	body := GetBodyFromUrl(fmt.Sprintf(
@@ -43,7 +49,7 @@ func GetSellOrdersByItem(contract, tokenID string) Order {
 }
 
 // Return Bids
-func GetNftOrderItemByID(itemID string) Bids {
+func GetNftOrderItemByID(itemID string) (Bids, error) {
 	body := GetBodyFromUrl(fmt.Sprintf(
 		"https://ethereum-api-staging.rarible.org/v0.1/nft-order/items/%s",
 		itemID,
@@ -51,8 +57,8 @@ func GetNftOrderItemByID(itemID string) Bids {
 	)
 
 	var data Bids
-	json.Unmarshal(body, &data)
-	return data
+	err := json.Unmarshal(body, &data)
+	return data, err
 }
 
 // Return Orders

@@ -47,11 +47,11 @@ type AllItems struct {
 	Items         []Item
 }
 
-func GetAllItems() AllItems {
+func GetAllItems() (AllItems, error) {
 	body := GetBodyFromUrl("https://ethereum-api-staging.rarible.org/v0.1/nft/items/all")
 	var data AllItems
-	json.Unmarshal(body, &data)
-	return data
+	err := json.Unmarshal(body, &data)
+	return data, err
 }
 
 func GetItemByID(itemID string) Item {

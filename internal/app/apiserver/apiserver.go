@@ -72,6 +72,9 @@ func (s *APIserver) configureRouter() {
 
 	// Create new and bid
 	s.router.POST("/create/bid", s.CreateBid())
+
+	s.router.GET("/get/bids_by_item", s.GetOrderBidsByItem())
+	s.router.GET("/get/items", s.GetAllItems())
 }
 
 // Configure db, from config file

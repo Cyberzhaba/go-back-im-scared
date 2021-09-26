@@ -119,3 +119,34 @@ func (s *APIserver) CreateBid() gin.HandlerFunc {
 		c.JSON(http.StatusOK, bid)
 	}
 }
+
+func (s *APIserver) GetOrderBidsByItem() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		itemID := c.Query("item_id")
+		bids, err := nft.GetNftOrderItemByID(itemID)
+		if err != nil {
+			s.logger.Error(err)
+			c.JSON(http.StatusNoContent, nft.InternalError{
+				Status:  1,
+				Code:    "404",
+				Message: "not fount",
+			})
+		}
+		c.JSON(http.StatusOK, bids)
+	}
+}
+
+func (s *APIserver) GetAllItems() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		item, err := nft.GetAllItems()
+		if err != nil {
+			s.logger.Error(err)
+			c.JSON(http.StatusNoContent, nft.InternalError{
+				Status:  1,
+				Code:    "404",
+				Message: "not fount",
+			})
+		}
+		c.JSON(http.StatusOK, item)
+	}
+}

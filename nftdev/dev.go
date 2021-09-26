@@ -1,30 +1,86 @@
 package nftdev
 
 import (
-	"crypto/ecdsa"
 	"crypto/x509"
 	"encoding/json"
-	"encoding/pem"
 	"fmt"
 
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
-func decode(pemEncoded string) *ecdsa.PrivateKey {
-	block, err := pem.Decode([]byte(pemEncoded))
-	if err != nil {
-		fmt.Printf("Error: %s", err)
-		// return
-	}
-	x509Encoded := block.Bytes
-	privateKey, b := x509.ParseECPrivateKey(x509Encoded)
-	if err != nil {
-		fmt.Printf("Error: %s", err)
-		// return
-	}
-	fmt.Println(b)
-	return privateKey
-}
+// type ecPrivateKey struct {
+// 	Version       int
+// 	PrivateKey    []byte
+// 	NamedCurveOID asn1.ObjectIdentifier `asn1:"optional,explicit,tag:0"`
+// 	PublicKey     asn1.BitString        `asn1:"optional,explicit,tag:1"`
+// }
+
+// func ParsePKCS1PrivateKey(der []byte) (*rsa.PrivateKey, error) {
+// 	var priv pkcs1PrivateKey
+// 	rest, err := asn1.Unmarshal(der, &priv)
+// 	if len(rest) > 0 {
+// 		return nil, asn1.SyntaxError{Msg: "trailing data"}
+// 	}
+// 	if err != nil {
+// 		if _, err := asn1.Unmarshal(der, &ecPrivateKey{}); err == nil {
+// 			return nil, errors.New("x509: failed to parse private key (use ParseECPrivateKey instead for this key format)")
+// 		}
+// 		if _, err := asn1.Unmarshal(der, &pkcs8{}); err == nil {
+// 			return nil, errors.New("x509: failed to parse private key (use ParsePKCS8PrivateKey instead for this key format)")
+// 		}
+// 		return nil, err
+// 	}
+
+// 	if priv.Version > 1 {
+// 		return nil, errors.New("x509: unsupported private key version")
+// }
+
+// if priv.N.Sign() <= 0 || priv.D.Sign() <= 0 || priv.P.Sign() <= 0 || priv.Q.Sign() <= 0 {
+// 	return nil, errors.New("x509: private key contains zero or negative value")
+// }
+
+// key := new(rsa.PrivateKey)
+// key.PublicKey = rsa.PublicKey{
+// 	E: priv.E,
+// 	N: priv.N,
+// }
+
+// key.D = priv.D
+// key.Primes = make([]*big.Int, 2+len(priv.AdditionalPrimes))
+// key.Primes[0] = priv.P
+// key.Primes[1] = priv.Q
+// for i, a := range priv.AdditionalPrimes {
+// 	if a.Prime.Sign() <= 0 {
+// 		return nil, errors.New("x509: private key contains zero or negative prime")
+// 	}
+// 	key.Primes[i+2] = a.Prime
+// 	// We ignore the other two values because rsa will calculate
+// 	// them as needed.
+// }
+
+// err = key.Validate()
+// if err != nil {
+// 	return nil, err
+// }
+// 	key.Precompute()
+
+// 	return key, nil
+// }
+
+// func decode(pemEncoded string) *ecdsa.PrivateKey {
+// 	block, _ := pem.Decode([]byte(pemEncoded))
+// 	// if err != nil {
+// 	// 	fmt.Printf("Error: %s", err)
+// 	// 	return
+// 	// }
+// 	x509Encoded := block.Bytes
+// 	privateKey, _ := x509.ParseECPrivateKey(x509Encoded)
+// 	// if err != nil {
+// 	// 	fmt.Printf("Error: %s", err)
+// 	// 	return error.N
+// 	// }
+// 	return privateKey
+// }
 
 func Dev() {
 	type AssetType1 struct {
@@ -108,7 +164,7 @@ func Dev() {
 	// account, wallet := nft.GenerateWallet()
 	// privkey := crypto."ab7d05552d9f5a561571168d046cae24690aef606f1cfd661184a1d0ca56c0ad"
 	// privKey, _ := wallet.PrivateKey(account)
-	privkey := decode("ab7d05552d9f5a561571168d046cae24690aef606f1cfd661184a1d0ca56c0ad")
+	privkey, err := x509.ParseECPrivateKey([]byte("ab7d05552d9f5a561571168d046cae24690aef606f1cfd661184a1d0ca56c0ad"))
 	sign, err := crypto.Sign(hash[:], privkey)
 	fmt.Println(sign, err)
 	// nft.SignTransaction(*wallet, account, data)

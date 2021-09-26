@@ -30,6 +30,9 @@ func SignTransaction(wallet hdwallet.Wallet, account accounts.Account, data []by
 
 // Return account and value from best seller
 func GetBestBidOrder(itemID string) (string, int) {
-	bids := GetNftOrderItemByID(itemID)
+	bids, err := GetNftOrderItemByID(itemID)
+	if err != nil {
+		log.Println(err)
+	}
 	return bids.Royalties[0].AccountAddr, bids.Royalties[0].Value
 }
