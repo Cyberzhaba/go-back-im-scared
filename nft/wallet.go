@@ -10,6 +10,7 @@ import (
 func GenerateWallet() (accounts.Account, *hdwallet.Wallet) {
 	mnemonic := "tag volcano eight thank tide danger coast health above argue embrace heavy"
 	wallet, err := hdwallet.NewFromMnemonic(mnemonic)
+	// wallet, err := hdwallet.
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -1,9 +1,7 @@
 package apiserver
 
 import (
-	"log"
 	"net/http"
-	"os"
 
 	"github.com/Cyberzhaba/go-back-im-scared/internal/app/store"
 	nft "github.com/Cyberzhaba/go-back-im-scared/nft"
@@ -56,7 +54,7 @@ func (s *APIserver) CreateUser() gin.HandlerFunc {
 			return
 		}
 		// Generate "new" account
-		account, wallet := nft.GenerateWallet()
+		account, _ := nft.GenerateWallet()
 		// Create new user
 		newUser := store.User{
 			TelegramID: tgid,
@@ -65,21 +63,22 @@ func (s *APIserver) CreateUser() gin.HandlerFunc {
 			AddrWallet: account.Address.Hex(),
 		}
 
-		// s.store.Database.Clauses(clause.OnConflict{
-		// 	Columns:   []clause.Column{{Name: "telegram_id"}},
-
-		// }).Create(&newUser)
 		if err := s.store.Database.Create(&newUser).Error; err != nil {
 			c.JSON(http.StatusConflict, store.User{})
 			s.logger.Error("%v", err)
 			return
 		}
 		// DEV TEST
-		data, err := os.ReadFile("testdata.txt")
-		if err != nil {
-			log.Printf("%v", err)
-		}
-		nft.SignTransaction(*wallet, account, data)
+		// data, err := os.ReadFile("testdata.txt")
+		// if err != nil {
+		// 	s.logger.Error(err)
+		// }
+		// s.logger.Info(data)
+		// sign, err := wallet.SignDataWithPassphrase(account, "tag volcano eight thank tide danger coast health above argue embrace heavy", "text/plain", data)
+		// fmt.Println(sign, err)
+		// addrm := account.Address
+		// fmt.Println(addrm, err)
+		// nft.SignTransaction(*wallet, account, data)
 
 		c.JSON(http.StatusCreated, newUser)
 	}
@@ -105,7 +104,18 @@ func (s *APIserver) CreateBid() gin.HandlerFunc {
 			c.JSON(http.StatusConflict, store.UserBid{})
 			return
 		}
-
+		bid = store.UserBid{
+			TelegramID: checkBid.TelegramID,
+			MaxValue:   checkBid.MaxValue,
+			Timestamp:  checkBid.Timestamp,
+			TokenID:    checkBid.TokenID,
+			Contract:   checkBid.Contract,
+		}
+		if err := s.store.Database.Create(&bid).Error; err != nil {
+			c.JSON(http.StatusConflict, store.UserBid{})
+			s.logger.Error("%v", err)
+			return
+		}
 		c.JSON(http.StatusOK, bid)
 	}
 }

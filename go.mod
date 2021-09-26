@@ -3,11 +3,12 @@ module github.com/Cyberzhaba/go-back-im-scared
 go 1.17
 
 require (
-	github.com/BurntSushi/toml v0.4.1
+	github.com/BurntSushi/toml v0.3.1
 	github.com/davecgh/go-spew v1.1.1
 	github.com/ethereum/go-ethereum v1.10.8
 	github.com/ethersphere/bee v1.1.0
 	github.com/gin-gonic/gin v1.7.4
+	github.com/go-playground/assert/v2 v2.0.1
 	github.com/miguelmota/go-ethereum-hdwallet v0.1.1
 	github.com/sirupsen/logrus v1.8.1
 	gorm.io/driver/sqlite v1.1.5

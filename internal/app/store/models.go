@@ -6,17 +6,19 @@ import (
 
 type UserBid struct {
 	gorm.Model
-	MaxValue  int    `json:"maxvaule"`
-	Timestamp string `json:"timestamp"`
-	TokenID   string `json:"token_id"`
-	Contract  string `json:"contract"`
+	TelegramID string `json:"telegram_id"`
+	MaxValue   int    `json:"maxvalue"`
+	Timestamp  string `json:"timestamp"`
+	TokenID    string `json:"token_id"`
+	Contract   string `json:"contract"`
 }
 
 type CheckUserBid struct {
-	MaxValue  int    `json:"maxvaule"`
-	Timestamp string `json:"timestamp"`
-	TokenID   string `json:"token_id"`
-	Contract  string `json:"contract"`
+	TelegramID string `json:"telegram_id"`
+	MaxValue   int    `json:"maxvalue"`
+	Timestamp  string `json:"timestamp"`
+	TokenID    string `json:"token_id"`
+	Contract   string `json:"contract"`
 }
 
 type UserHistory struct {

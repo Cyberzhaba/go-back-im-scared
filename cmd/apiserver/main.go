@@ -6,6 +6,7 @@ import (
 
 	"github.com/BurntSushi/toml"
 	"github.com/Cyberzhaba/go-back-im-scared/internal/app/apiserver"
+	_ "github.com/Cyberzhaba/go-back-im-scared/nftdev"
 )
 
 var (
@@ -28,4 +29,5 @@ func main() {
 	if err := s.Start(); err != nil {
 		log.Fatalf("%v", err)
 	}
+	// nftdev.Dev()
 }
