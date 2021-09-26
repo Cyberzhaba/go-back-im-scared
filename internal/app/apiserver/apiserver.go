@@ -54,6 +54,7 @@ func (s *APIserver) configureLogger() error {
 func (s *APIserver) configureRouter() {
 	s.router.GET("/ping", s.Ping())
 	s.router.POST("/createuser", s.CreateUser())
+	s.router.GET("/getuser/:tgid", s.GetUserByID())
 }
 
 func (s *APIserver) configureStore() error {

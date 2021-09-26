@@ -19,6 +19,15 @@ func (s *APIserver) Ping() gin.HandlerFunc {
 	}
 }
 
+func (s *APIserver) GetUserByID() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		tgid := c.Param("telegramID")
+		var user store.User
+		s.store.Database.First(&user, "telegramID = ?", tgid)
+		c.JSON(http.StatusOK, user)
+	}
+}
+
 func (s *APIserver) CreateUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		type checkUser struct {
