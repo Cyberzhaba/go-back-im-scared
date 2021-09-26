@@ -15,6 +15,7 @@ type APIserver struct {
 	store  *store.Store
 }
 
+// Create apiserver
 func New(config *Config) *APIserver {
 	return &APIserver{
 		config: config,
@@ -23,6 +24,7 @@ func New(config *Config) *APIserver {
 	}
 }
 
+// Init
 func (s *APIserver) Start() error {
 	if err := s.configureLogger(); err != nil {
 		return err
@@ -40,6 +42,7 @@ func (s *APIserver) Start() error {
 		s.config.BindAddr, s.router)
 }
 
+// Configure logger, set value from config file
 func (s *APIserver) configureLogger() error {
 	level, err := logrus.ParseLevel(s.config.LogLevel)
 	if err != nil {
@@ -51,12 +54,14 @@ func (s *APIserver) configureLogger() error {
 	return nil
 }
 
+// Add routes
 func (s *APIserver) configureRouter() {
 	s.router.GET("/ping", s.Ping())
+	s.router.GET("/getuser/:telegram_id", s.GetUserByID())
 	s.router.POST("/createuser", s.CreateUser())
-	s.router.GET("/getuser/:tgid", s.GetUserByID())
 }
 
+// Configure db, from config file
 func (s *APIserver) configureStore() error {
 	st := store.New(s.config.Store)
 	if err := st.Open(); err != nil {
@@ -66,9 +71,3 @@ func (s *APIserver) configureStore() error {
 	s.store = st
 	return nil
 }
-
-// func (s *APIserver) Ping() gin.HandlerFunc {
-// 	return func(c *gin.Context) {
-// 		c.JSON(http.StatusOK, "OK")
-// 	}
-// }

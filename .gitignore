@@ -1,2 +1,8 @@
+# Database
 db.*
+
+# Bin files
+apiserver
+
+# Private
 apiserver.toml

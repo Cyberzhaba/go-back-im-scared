@@ -1,4 +1,4 @@
-package tools
+package nft
 
 import (
 	"log"
@@ -6,18 +6,17 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	hdwallet "github.com/miguelmota/go-ethereum-hdwallet"
 )
 
-func SignTransaction(wallet hdwallet.Wallet, account accounts.Account) {
+func SignTransaction(wallet hdwallet.Wallet, account accounts.Account, data []byte) {
 	nonce := uint64(0)
-	value := big.NewInt(1000000000000000000)
-	toAddress := common.HexToAddress("0x0")
+	value := big.NewInt(3)
+	// toAddress := common.HexToAddress("0x0")
+	toAddress := account.Address
 	gasLimit := uint64(21000)
-	gasPrice := big.NewInt(21000000000)
-	var data []byte
+	gasPrice := big.NewInt(2)
 
 	tx := types.NewTransaction(nonce, toAddress, value, gasLimit, gasPrice, data)
 	signedTx, err := wallet.SignTx(account, tx, nil)

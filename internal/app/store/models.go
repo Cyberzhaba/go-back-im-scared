@@ -5,27 +5,25 @@ import (
 )
 
 type UserBids struct {
-	ID        int `json:"id" gorm:""`
+	gorm.Model
 	Timestamp string
 }
 
 type UserHistory struct {
 	gorm.Model
-	ID   int    `json:"id"`
 	Type string `json:"type"`
+}
+
+type User struct {
+	gorm.Model
+	TelegramID  int           `json:"telegram_id" gorm:"unique"`
+	SeedPhrase  string        `json:"seed_phrase"`
+	AddrWallet  string        `json:"addr_wallet"`
+	UserBids    []UserBids    `json:"user_bids" gorm:"foreignKey:id"`
+	UserHistory []UserHistory `json:"user_history" gorm:"foreignKey:id"`
 }
 
 // Struct for test
 type Pong struct {
 	Message string `json:"message"`
-}
-
-type User struct {
-	gorm.Model
-	ID          int           `json:"id"`
-	TelegramID  int           `json:"telegramID"`
-	SeedPhrase  string        `json:"seedPhrase"`
-	AddrWallet  string        `json:"addrWallet"`
-	UserBids    []UserBids    `json:"userBids" gorm:"foreignKey:ID"`
-	UserHistory []UserHistory `json:"userHistory" gorm:"foreignKey:ID"`
 }

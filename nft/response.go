@@ -1,4 +1,4 @@
-package tools
+package nft
 
 import (
 	"io/ioutil"

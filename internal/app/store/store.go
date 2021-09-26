@@ -2,7 +2,7 @@ package store
 
 import (
 
-	// _ "github.com/lib/pq"
+	// _ "github.com/lib/pq" //TODO dinamic switch
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -18,6 +18,7 @@ func New(config *Config) *Store {
 	}
 }
 
+// Init and migrations db
 func (s *Store) Open() error {
 	db, err := gorm.Open(sqlite.Open("db.sqlite3"), &gorm.Config{})
 	if err != nil {
